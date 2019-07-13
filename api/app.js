@@ -4,6 +4,8 @@ const bodyParser = require('body-parser');
 const logger = require('./middleware/logger');
 const cors = require('./middleware/cors');
 
+const sendRabbitMessage = require('./logic/rabbitmq');
+
 // Init the App
 
 const app = express();
@@ -52,16 +54,32 @@ app.get('/top5', (req, res) => {
 });
 
 app.post('/author', (req, res) => {
-    res.send({
-        ok: true,
-        author: req.body
+    sendRabbitMessage(req.body, (err, data) => {
+        
+        if (err) {
+            console.error(err);
+        }
+
+        res.send({
+            ok: true,
+            author: req.body,
+            rabbit: data
+        });
     });
 });
 
 app.post('/book', (req, res) => {
-    res.send({
-        ok: true,
-        book: req.body
+    sendRabbitMessage(req.body, (err, data) => {
+        
+        if (err) {
+            console.error(err);
+        }
+
+        res.send({
+            ok: true,
+            book: req.body,
+            rabbit: data
+        });
     });
 });
 
