@@ -54,7 +54,7 @@ app.get('/top5', (req, res) => {
 });
 
 app.post('/author', (req, res) => {
-    sendRabbitMessage(req.body, (err, data) => {
+    sendRabbitMessage({author: req.body}, (err, data) => {
         
         if (err) {
             console.error(err);
@@ -69,7 +69,7 @@ app.post('/author', (req, res) => {
 });
 
 app.post('/book', (req, res) => {
-    sendRabbitMessage(req.body, (err, data) => {
+    sendRabbitMessage({book: req.body}, (err, data) => {
         
         if (err) {
             console.error(err);

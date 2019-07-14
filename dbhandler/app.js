@@ -1,45 +1,34 @@
-const amqp = require('amqplib/callback_api');
+const processMessages = require('./logic/rabbitmq');
+const db = require('./logic/dbcreator');
 
-amqp.connect('amqp://localhost', (err, connection) => {
-    
-    if (err) {
-        console.error('amqp connection error:', err);
-        return;
+processMessages((msg) => {
+
+    const addData = (tableName, data) => {
+        return db(tableName).insert(data).then(() => {
+            return true;
+        }).catch((err) => {
+            console.error(err);
+            return false;
+        });
     }
 
-    connection.createChannel((err, channel) => {
-        
-        if (err) {
-            console.error('amqp create channel error:', err);
-            return;
+    let success;
+    
+    if (msg.author) {
+        success = addData('authors', msg.author);
+    } else if (msg.book) {
+        success = addData('books', msg.book);
+    }
+
+    if (success) {
+        return {
+            ok: true,
+            msg: 'New data inserted'
         }
-        
-        const queue = 'rpc_queue';
-
-        channel.assertQueue(queue, {
-            durable: false
-        });
-
-        channel.prefetch(1);
-        
-        console.log('Awaiting RPC requests');
-        channel.consume(queue, (msg) => {
-        
-            const data = JSON.parse(msg.content);
-            console.log('Recieved:', data);
-
-            var res = {
-                ok: true,
-                msg: 'Data recieved',
-                data
-            };
-
-            channel.sendToQueue(msg.properties.replyTo,
-                Buffer.from(JSON.stringify(res)), {
-                    correlationId: msg.properties.correlationId
-                });
-
-            channel.ack(msg);
-        });
-    });
+    } else {
+        return {
+            ok: false,
+            msg: 'Data wasn\'t inserted'
+        }
+    }
 });
