@@ -1,4 +1,4 @@
-const topAuthorsBox = document.querySelector('#top-authors-box');
+const topAuthorsBox = document.querySelector('#top-authors-records');
 
 window.addEventListener('load', (event) => {
     
@@ -18,12 +18,16 @@ window.addEventListener('load', (event) => {
 
             const {name, age, books} = author;
 
-            const authorBox = document.createElement('div');
-            const authorText = document.createElement('span');
-            authorText.innerHTML = `${name} (age ${age}) wrote ${books} books`;
-            authorBox.appendChild(authorText);
+            const authorRecord = document.createElement('div');
+            authorRecord.className = 'columns';
             
-            topAuthorsBox.appendChild(authorBox);
+            for (let item of [name, age, books]) {
+                const itemBox = document.createElement('div');
+                itemBox.innerHTML = item;
+                authorRecord.appendChild(itemBox);
+            }
+
+            topAuthorsBox.appendChild(authorRecord);
         }
     });
 });

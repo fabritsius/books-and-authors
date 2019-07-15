@@ -1,5 +1,6 @@
 body {
     margin: 0;
+    min-width: 304px;
 }
 
 #content {
@@ -13,6 +14,10 @@ body {
     padding: 10px 30px;
     border-radius: 5px;
     box-shadow: 0px 0px 5px #e2e2e2;
+}
+
+#content h2 {
+    color: #5862eb;
 }
 
 nav {
@@ -35,6 +40,39 @@ nav span {
 
 nav a {
     color: white;
+}
+
+div.overflow-scroll {
+    overflow-x: scroll;
+    white-space: nowrap;
+}
+
+#top-authors-box {
+    min-width: 512px;
+}
+
+#top-authors-box div.columns {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#top-authors-box div.columns > div {
+    width: calc(30% - 2px);
+    background-color: #efefef;
+    text-align: center;
+    margin: 1px;
+}
+
+#top-authors-box div.columns > div:first-child {
+    text-align: left;
+    padding-left: 20px;
+    width: calc(40% - 22px);
+}
+
+#top-authors-box div.columns.columns-header > div {
+    color: #4112e2;
+    font-size: 18px;
+    margin-bottom: 3px;
 }
 
 form div {
