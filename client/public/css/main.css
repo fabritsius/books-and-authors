@@ -75,6 +75,10 @@ div.overflow-scroll {
     margin-bottom: 3px;
 }
 
+#top-authors-box div.columns.columns-header.hidden {
+    display: none;
+}
+
 form div {
     margin: 10px 0;
     width: 100%;
@@ -96,4 +100,14 @@ form input[type=submit] {
     background-color: #6f47f1;
     font-size: 14px;
     border-radius: 5px;
+}
+
+#errors-box {
+    background-color: #ffe6e6;
+    box-shadow: 0 0 5px #ffa3a3;
+    color: #b10000;
+}
+
+#errors-box.hidden {
+    display: none;
 }

@@ -1,20 +1,23 @@
 
 <h1>Create a Book</h1>
 
+<div id="errors-box" class="hidden"></div>
 <div>
-    <form action="http://localhost:5001/book" method="POST">
+    <form action="http://localhost:5001/book">
         <div>
             <label for="title">Book Title</label>
-            <input name="title" type="text" placeholder="Book Title">
+            <input name="title" type="text" placeholder="Book Title" required="true">
         </div>
         <div>
             <label for="authorId">Author ID</label>
-            <input name="authorId" type="text" placeholder="Author ID">
+            <input name="authorId" type="text" placeholder="Author ID" required="true">
         </div>
         <div>
             <label for="pages">Pages</label>
-            <input name="pages" type="text" placeholder="Number of pages in the book">
+            <input name="pages" type="text" placeholder="Number of pages in the book" required="true">
         </div>
         <input type="submit" value="Create a Book">
     </form>
 </div>
+
+<script src='/js/forms.js'></script>

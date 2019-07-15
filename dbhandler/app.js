@@ -4,9 +4,18 @@ const db = require('./logic/dbcreator');
 processMessages(async (msg) => {
 
     const addData = (tableName, data) => {
+
+        for (let key in data) {
+            console.log(key, data[key], !data[key]);
+            if (!data[key]) {
+                return Promise.resolve(false);
+            }
+        }
+
         return db(tableName).insert(data).then(() => {
             return true;
-        }).catch(() => {
+        }).catch((err) => {
+            console.log(err);
             return false;
         });
     }

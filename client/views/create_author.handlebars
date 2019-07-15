@@ -1,18 +1,21 @@
 <h1>Create an Author</h1>
 
+<div id="errors-box" class="hidden"></div>
 <div>
-    <form action="http://localhost:5001/author" method="POST">
+    <form action="http://localhost:5001/author">
         
         <div>
             <label>Name</label>
-            <input name="name" type="text" placeholder="Author's Name"></label>
+            <input name="name" type="text" placeholder="Author's Name" required="true"></label>
         </div>
         
         <div>
             <label>Age</label>
-            <input name="age" type="text" placeholder="Author's Age">
+            <input name="age" type="text" placeholder="Author's Age" required="true">
         </div>
         
         <input type="submit" value="Create an Author">
     </form>
 </div>
+
+<script src='/js/forms.js'></script>

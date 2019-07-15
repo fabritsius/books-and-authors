@@ -59,11 +59,7 @@ app.post('/author', (req, res) => {
             console.error(err);
         }
 
-        res.send({
-            ok: true,
-            author: req.body,
-            rabbit: data
-        });
+        res.send(data);
     });
 });
 
@@ -74,11 +70,7 @@ app.post('/book', (req, res) => {
             console.error(err);
         }
 
-        res.send({
-            ok: true,
-            book: req.body,
-            rabbit: data
-        });
+        res.send(data);
     });
 });
 
