@@ -1,13 +1,12 @@
 const processMessages = require('./logic/rabbitmq');
 const db = require('./logic/dbcreator');
 
-processMessages((msg) => {
+processMessages(async (msg) => {
 
     const addData = (tableName, data) => {
         return db(tableName).insert(data).then(() => {
             return true;
-        }).catch((err) => {
-            console.error(err);
+        }).catch(() => {
             return false;
         });
     }
@@ -15,9 +14,9 @@ processMessages((msg) => {
     let success;
     
     if (msg.author) {
-        success = addData('authors', msg.author);
+        success = await addData('authors', msg.author);
     } else if (msg.book) {
-        success = addData('books', msg.book);
+        success = await addData('books', msg.book);
     }
 
     if (success) {

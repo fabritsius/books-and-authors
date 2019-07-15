@@ -1,10 +1,18 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const redis = require('redis');
 
 const logger = require('./middleware/logger');
 const cors = require('./middleware/cors');
 
 const sendRabbitMessage = require('./logic/rabbitmq');
+
+// Create Redis Client
+const cache = redis.createClient();
+
+cache.on('connect', () => {
+    console.log('Connected to Redis cache...');
+});
 
 // Init the App
 
@@ -21,35 +29,26 @@ app.use(cors);
 // Set routes
 
 app.get('/top5', (req, res) => {
-    res.send({
-        ok: true,
-        results: [
-            {
-                id: 1,
-                name: 'John Green',
-                age: 32
-            },
-            {
-                id: 2,
-                name: 'Tom Brown',
-                age: 42
-            },
-            {
-                id: 3,
-                name: 'Hannah Purple',
-                age: 26
-            },
-            {
-                id: 4,
-                name: 'Stephan White',
-                age: 51
-            },
-            {
-                id: 5,
-                name: 'Greg Yellow',
-                age: 23
-            }
-        ]
+    cache.lrange('top5', 0, 4, (err, rows) => {
+
+        if (err) {
+            console.error('cache read error', err);
+            return res.send({
+                ok: false,
+                msg: 'Internal error'
+            });
+        }
+
+        const top5Resp = {
+            ok: true,
+            results: []
+        }
+
+        for (row of rows) {
+            top5Resp.results.push(JSON.parse(row));
+        }
+
+        return res.send(top5Resp);
     });
 });
 

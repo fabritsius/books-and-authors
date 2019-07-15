@@ -30,14 +30,14 @@ const processMessages = (responseHandler) => {
                 const data = JSON.parse(msg.content);
                 console.log('Recieved:', data);
     
-                const response = responseHandler(data);
-    
-                channel.sendToQueue(msg.properties.replyTo,
-                    Buffer.from(JSON.stringify(response)), {
-                        correlationId: msg.properties.correlationId
-                    });
-    
-                channel.ack(msg);
+                responseHandler(data).then((response) => {
+                    channel.sendToQueue(msg.properties.replyTo,
+                        Buffer.from(JSON.stringify(response)), {
+                            correlationId: msg.properties.correlationId
+                        });
+        
+                    channel.ack(msg);
+                }); 
             });
         });
     });

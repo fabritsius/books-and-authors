@@ -1,3 +1,4 @@
+const redis = require('redis');
 const db = require('knex')({
     client: 'pg',
     connection: {
@@ -6,6 +7,13 @@ const db = require('knex')({
         password: 'mysecretpassword',
         database: 'postgres'
     }
+});
+
+// Create Redis Client
+const cache = redis.createClient();
+
+cache.on('connect', () => {
+    console.log('Connected to Redis cache...');
 });
 
 db.from('authors')
@@ -42,7 +50,13 @@ db.from('authors')
     console.log('\nPerforming Authors:\n');
     for (row of rows) {
         console.log(`${row['name']} wrote ${row['books']} big books`);
+        cache.rpush('top5', JSON.stringify(row));
     }
+
+    // Remove previous 5 records
+    cache.ltrim('top5', 5, 9, () => {
+        console.log('Cache updated');
+    });
 }).catch((err) => {
     console.log( err); throw err;
 }).finally(() => {
