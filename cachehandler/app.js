@@ -48,15 +48,21 @@ db.from('authors')
     .limit(5)
 .then((rows) => {
     console.log('\nPerforming Authors:\n');
-    for (row of rows) {
-        console.log(`${row['name']} wrote ${row['books']} big books`);
-        cache.rpush('top5', JSON.stringify(row));
-    }
 
-    // Remove previous 5 records
-    cache.ltrim('top5', 5, 9, () => {
-        console.log('Cache updated');
-    });
+    if (rows.length) {
+        cache.rpush('top5', rows.map((r) => {
+            console.log(r);
+            return JSON.stringify(r);
+        }));
+        
+        // Remove previous records
+        cache.ltrim('top5', -rows.length, -1);
+    } else {
+        // Clear the cache
+        cache.ltrim('top5', 1, 0)
+    }
+    
+    console.log('Cache updated');
 }).catch((err) => {
     console.log( err); throw err;
 }).finally(() => {
