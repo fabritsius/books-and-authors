@@ -8,7 +8,7 @@ const cors = require('./middleware/cors');
 const sendRabbitMessage = require('./logic/rabbitmq');
 
 // Create Redis Client
-const cache = redis.createClient();
+const cache = redis.createClient({host : 'redis', port : 6379});
 
 cache.on('connect', () => {
     console.log('Connected to Redis cache...');
@@ -76,7 +76,7 @@ app.post('/book', (req, res) => {
 
 // Start the server
 
-const port = process.env.PORT || 5001;
+const port = process.env.PORT || 80;
 
 app.listen(port, () => {
     console.log(`An API service is listening on port ${port}`);

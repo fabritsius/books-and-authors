@@ -2,7 +2,7 @@ const topAuthorsRecords = document.querySelector('#top-authors-records');
 
 window.addEventListener('load', (event) => {
     
-    fetch('http://localhost:5001/top5').then((res) => {
+    fetch('http://localhost/top5').then((res) => {
         return res.json();
     }).then((res) => {
 

@@ -2,7 +2,7 @@ const amqp = require('amqplib/callback_api');
 const uuid = require('uuid/v4');
 
 const sendRabbitMessage = (data, callback) => {
-    amqp.connect('amqp://localhost', (err, connection) => {
+    amqp.connect('amqp://rabbit:rabbitpass@rabbitmq', (err, connection) => {
 
         const sendResult = (err, data) => {
             callback(err, data);
@@ -13,8 +13,8 @@ const sendRabbitMessage = (data, callback) => {
         }
     
         if (err) {
-            console.error('amqp connection error:', err);
-            return sendResult(err, null);
+            console.error('amqp connection error:');
+            throw err;
         }
 
         connection.createChannel((err, channel) => {

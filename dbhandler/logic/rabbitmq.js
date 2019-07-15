@@ -2,11 +2,11 @@ const amqp = require('amqplib/callback_api');
 
 const processMessages = (responseHandler) => {
 
-    amqp.connect('amqp://localhost', (err, connection) => {
+    amqp.connect('amqp://rabbit:rabbitpass@rabbitmq', (err, connection) => {
     
         if (err) {
-            console.error('amqp connection error:', err);
-            return;
+            console.error('amqp connection error:');
+            throw err;
         }
     
         connection.createChannel((err, channel) => {

@@ -2,7 +2,7 @@ const redis = require('redis');
 const db = require('knex')({
     client: 'pg',
     connection: {
-        host: '127.0.0.1',
+        host: 'db',
         user: 'postgres',
         password: 'mysecretpassword',
         database: 'postgres'
@@ -12,7 +12,7 @@ const db = require('knex')({
 const getTimeString = require('./logic/timeprint');
 
 // Create Redis Client
-const cache = redis.createClient();
+const cache = redis.createClient({host : 'redis', port : 6379});
 
 cache.on('connect', () => {
     console.log('Connected to Redis cache...');

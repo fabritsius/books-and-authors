@@ -1,0 +1,69 @@
+version: "3"
+
+services:
+
+  client:
+    build: ./client
+    ports:
+      - "8080:8080"
+    links:
+      - "api"
+    depends_on:
+      - "api"
+    restart: always
+
+  api:
+    build: ./api
+    ports:
+      - "80:80"
+    links:
+      - "rabbitmq"
+      - "cachehandler"
+    depends_on:
+      - "dbhandler"
+      - "cachehandler"
+    restart: always
+  
+  dbhandler:
+    build: ./dbhandler
+    links:
+      - "rabbitmq"
+      - "db"
+    depends_on:
+      - "rabbitmq"
+      - "db"
+    restart: always
+
+  cachehandler:
+    build: ./cachehandler
+    links:
+      - "db"
+      - "redis"
+    depends_on:
+      - "db"
+      - "redis"
+    restart: always
+
+  rabbitmq:
+    image: rabbitmq
+    ports:
+      - "5672:5672"
+    environment:
+      RABBITMQ_DEFAULT_USER: rabbit
+      RABBITMQ_DEFAULT_PASS: rabbitpass
+    restart: always
+
+  db:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-mysecretpassword}
+    restart: always
+
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+    restart: always
+  
