@@ -34,14 +34,12 @@ const sendRabbitMessage = (data, callback) => {
                 }
                 
                 const correlationId = uuid();
-                console.log('Sending data:\n', data);
             
                 channel.consume(q.queue, (msg) => {
                     
                     if (msg.properties.correlationId == correlationId) {
 
                         const data = JSON.parse(msg.content);
-                        console.log('Recieved response:\n', data);
                         return sendResult(null, data);
                     }
                 }, {

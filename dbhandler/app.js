@@ -6,7 +6,6 @@ processMessages(async (msg) => {
     const addData = (tableName, data) => {
 
         for (let key in data) {
-            console.log(key, data[key], !data[key]);
             if (!data[key]) {
                 return Promise.resolve(false);
             }
@@ -15,7 +14,6 @@ processMessages(async (msg) => {
         return db(tableName).insert(data).then(() => {
             return true;
         }).catch((err) => {
-            console.log(err);
             return false;
         });
     }
