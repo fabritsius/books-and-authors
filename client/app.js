@@ -36,7 +36,7 @@ app.use('/create', require('./routes/create'));
 
 // Start the server
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 8080;
 
 app.listen(port, () => {
     console.log(`A Client service is listening on port ${port}`);
