@@ -44,7 +44,7 @@ app.get('/top5', (req, res) => {
             results: []
         }
 
-        for (row of rows) {
+        for (let row of rows) {
             top5Resp.results.push(JSON.parse(row));
         }
 
