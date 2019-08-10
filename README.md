@@ -2,7 +2,7 @@
 
 Demo App which uses Microservice Architecture.
 
-There are 7 Microservices, each has it's own Docker Container.
+There are 7 Microservices, each has its own Docker Container.
 
 ## Usage
 
